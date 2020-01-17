@@ -14,45 +14,35 @@ mostrarNaTela(listaTarefas);
 
 
 buttonAdd.onclick = function(){
+
     let valorDigitado = inputAdd.value;
     listaTarefas.push(valorDigitado)
 
-    let tarefa = document.createElement('div')
-    tarefa.setAttribute('class','tarefa');
+    gerarTarefa(valorDigitado, listaTarefas.length -1)
 
-    let titulo = document.createElement('div');
-    titulo.setAttribute('class','col-md-8');
-    titulo.textContent = valorDigitado;
-
-    let buttonCheck = document.createElement('div');
-    buttonCheck.setAttribute('class','col-md-2');
-
-    let imgCheck = document.createElement('img');
-    imgCheck.setAttribute('class','icon');
-    imgCheck.setAttribute('src','img/check.jpg');
-
-    buttonCheck.appendChild(imgCheck);
-
-    tarefa.appendChild(titulo);
-    tarefa.appendChild(buttonCheck);
-
-    board.appendChild(tarefa)
-
-    localStorage.setItem("listaTarefas", JSON.stringify(listaTarefas))
+   
+    localStorage.setItem("listaTarefas", JSON.stringify(listaTarefas));
 
 }
 
 function mostrarNaTela(listaTarefas){
-    for(let item of listaTarefas){
-        gerarTarefa(item);
-    }
+    //for(let item of listaTarefas){
+     //   gerarTarefa(item);
+   // }
+   board.innerHTML = ""
+
+   listaTarefas.forEach(function(valor, posicao){
+        gerarTarefa(valor, posicao)
+   })
 
 
 }
 
-function gerarTarefa(valorDigitado){
-    let tarefa = document.createElement('div')
+function gerarTarefa(valorDigitado, posicao){
+    let tarefa = document.createElement('div');
+
     tarefa.setAttribute('class','tarefa');
+    tarefa.setAttribute('posicao',posicao);
     
     let titulo = document.createElement('div');
     titulo.setAttribute('class','col-md-8');
@@ -66,11 +56,27 @@ function gerarTarefa(valorDigitado){
     imgCheck.setAttribute('src','img/check.jpg');
     
     buttonCheck.appendChild(imgCheck);
+
+    imgCheck.onclick = function(event){
+
+       //let tarefaPai = event.target.parentNode.parentNode
+        //tarefaPai.remove();
+       
+
+        let posicaoTarefa = tarefa.getAttribute('posicao');
+        listaTarefas = listaTarefas.filter(function(valor, posicao){
+            return posicao != posicaoTarefa
+        })
+
+        mostrarNaTela(listaTarefas);
+        localStorage.setItem("listaTarefas", JSON.stringify(listaTarefas));
+        tarefa.remove();
+    }
     
     tarefa.appendChild(titulo);
     tarefa.appendChild(buttonCheck);
     
-    board.appendChild(tarefa)
+    board.appendChild(tarefa);
 
 
 }

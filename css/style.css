@@ -24,5 +24,6 @@ footer{
     align-items: center;
 }
 #novaTarefa{
-    
+    width: 80%;
+    border-radius: 20px;
 }
